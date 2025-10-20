@@ -6,87 +6,64 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ApplicationRequestController {
-
     @Autowired
-    private ApplicationRequestService applicationRequestService;
+    private ApplicationRequestService requestService;
 
     @GetMapping("/")
     public String getAll(Model model) {
-        model.addAttribute("requests", applicationRequestService.getAllRequests());
+        model.addAttribute("requests", requestService.getAllRequests());
         return "list";
     }
 
     @GetMapping("/new")
     public String addForm(Model model) {
         model.addAttribute("request", new ApplicationRequest());
+        model.addAttribute("courses", requestService.getAllCourses());
+        model.addAttribute("operators", requestService.getAllOperators());
         return "add";
     }
 
     @PostMapping("/new")
     public String createRequest(@RequestParam String userName,
-                                @RequestParam String courseName,
                                 @RequestParam String commentary,
-                                @RequestParam String phone) {
-        ApplicationRequest request = new ApplicationRequest();
-        request.setUserName(userName);
-        request.setCourseName(courseName);
-        request.setCommentary(commentary);
-        request.setPhone(phone);
-        applicationRequestService.saveRequest(request);
+                                @RequestParam String phone,
+                                @RequestParam Long courseId,
+                                @RequestParam(required = false) List<Long> operatorIds) {
+        requestService.createRequest(userName, commentary, phone, courseId, operatorIds);
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        ApplicationRequest req = applicationRequestService.getRequestById(id);
-        if (req == null) {
-            return "redirect:/";
-        }
+        ApplicationRequest req = requestService.getRequestById(id);
+        if (req == null) return "redirect:/";
         model.addAttribute("request", req);
         return "details";
     }
-    @PostMapping("/{id}/update")
-    public String updateRequest(@PathVariable Long id,
-                                @RequestParam String userName,
-                                @RequestParam String courseName,
-                                @RequestParam String phone,
-                                @RequestParam String commentary,
-                                @RequestParam(required = false) boolean handled) {
-        ApplicationRequest req = applicationRequestService.getRequestById(id);
-        if (req != null) {
-            req.setUserName(userName);
-            req.setCourseName(courseName);
-            req.setPhone(phone);
-            req.setCommentary(commentary);
-            req.setHandled(handled);
-            applicationRequestService.saveRequest(req);
-        }
-        return "redirect:/" + id;
-    }
 
     @PostMapping("/{id}/process")
-    public String process(@PathVariable Long id) {
-        applicationRequestService.markAsProcessed(id);
+    public String processRequest(@PathVariable Long id) {
+        requestService.markAsProcessed(id);
         return "redirect:/" + id;
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
-        applicationRequestService.deleteRequest(id);
+        requestService.deleteRequest(id);
         return "redirect:/";
     }
-
     @GetMapping("/pending")
     public String pending(Model model) {
-        model.addAttribute("requests", applicationRequestService.getPendingRequests());
+        model.addAttribute("requests", requestService.getPendingRequests());
         return "pending";
     }
-
     @GetMapping("/processed")
     public String processed(Model model) {
-        model.addAttribute("requests", applicationRequestService.getProcessedRequests());
+        model.addAttribute("requests", requestService.getProcessedRequests());
         return "processed";
     }
 }

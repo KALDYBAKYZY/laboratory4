@@ -4,26 +4,25 @@
       layout:decorate="~{layout.html}">
 <body>
 <div layout:fragment="content">
-<div class="container mt-4">
-    <h2>Processed Requests</h2>
-        <div class="row">
-            <div class="col-md-4 mb-4" th:each="r : ${requests}">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body" >
-                        <h5 class="card-title">
-                            Заявка от <span th:text="${r.userName}" class="text-success fw-bold"></span></h5>
-                        <p class="card-text">
-                            <strong>Course:</strong> <span th:text="${r.courseName}"></span><br>
-                            <strong>Commentary:</strong> <span th:text="${r.commentary}"></span><br>
-                            <strong>Phone:</strong> <span th:text="${r.phone}"></span>
-                            <a th:href="@{'/' + ${r.id}}" class="text-primary ">View</a>
-                        </p>
-                    </div>
+    <div class="container mt-4">
+        <h2>Processed Requests</h2>
+        <div class="row g-3">
+            <div class="col-md-6" th:each="r : ${requests}">
+                <div class="border rounded p-3 h-100">
+                    <p><strong>Name:</strong> <span th:text="${r.userName}"></span></p>
+                    <p><strong>Course:</strong> <span th:text="${r.course.name}"></span></p>
+                    <p><strong>Phone:</strong> <span th:text="${r.phone}"></span></p>
+                    <p><strong>Commentary:</strong> <span th:text="${r.commentary}"></span></p>
+                    <h6 class="text-success">Operators:</h6>
+                    <ul>
+                        <li th:each="op : ${r.operators}"
+                            th:text="${op.name + ' ' + op.surname + ' (' + op.department + ')'}"></li>
+                    </ul>
+                    <a th:href="@{/{id}(id=${r.id})}" class="btn btn-sm btn-primary">Details</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

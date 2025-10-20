@@ -4,23 +4,22 @@
       layout:decorate="~{layout.html}">
 <body>
 <div layout:fragment="content">
-<div class="container mt-4">
-    <h2 class="mb-3">All Requests</h2>
-        <div class="row">
-            <div class="col-md-4 mb-4" th:each="r : ${requests}">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body" >
-                        <h5 class="card-title">
-                            <span th:if="${!r.handled}" class="text-danger fw-bold me-1">(Новая)</span>
-                            Заявка от <span th:text="${r.userName}" class="text-success fw-bold"></span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Course:</strong> <span th:text="${r.courseName}"></span><br>
-                            <strong>Commentary:</strong> <span th:text="${r.commentary}"></span><br>
-                            <strong>Phone:</strong> <span th:text="${r.phone}"></span>
-                            <a th:href="@{'/' + ${r.id}}" class="text-primary ">View</a>
-                        </p>
-                    </div>
+    <div class="container mt-4">
+        <h2 class="mb-3">All Requests</h2>
+        <div class="row g-3">
+            <div class="col-md-6" th:each="r : ${requests}">
+                <div class="border rounded p-3 h-100 shadow-sm">
+                    <p><strong>Full Name:</strong> <span th:text="${r.userName}"></span></p>
+                    <p><strong>Course:</strong> <span th:text="${r.course != null ? r.course.name : 'Курс не выбран'}"></span></p>
+                    <p><strong>Phone:</strong> <span th:text="${r.phone}"></span></p>
+                    <p><strong>Comment:</strong> <span th:text="${r.commentary}"></span></p>
+                    <p>
+                        <strong>
+                            <span th:text="${r.handled} ? 'Processed' : 'Pending'"
+                                  th:style="${r.handled} ? 'color: green;' : 'color: red;'"></span>
+                        </strong>
+                    </p>
+                    <a th:href="@{/{id}(id=${r.id})}" class="btn btn-sm btn-primary">View</a>
                 </div>
             </div>
         </div>
