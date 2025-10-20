@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<body>
+<div layout:fragment="content">
+<div class="container mt-4">
+    <h2 class="mb-3">Add New Request</h2>
+    <form th:action="@{/new}" method="post">
+        <div class="mb-3">
+            <label for="userName" class="form-label">User Name</label>
+            <input type="text" id="userName" name="userName" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="courseName" class="form-label">Course Name</label>
+            <input type="text" id="courseName" name="courseName" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" id="phone" name="phone" class="form-control" placeholder="+7(7__)___-__-__" required>
+        </div>
+        <div class="mb-3">
+            <label for="commentary" class="form-label">Commentary</label>
+            <textarea id="commentary" name="commentary" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Add Request</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h2>Детали заявки</h2>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <form th:action="@{'/' + ${request.id} + '/update'}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">ФИО</label>
+                        <input type="text" name="userName" th:value="${request.userName}" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Курс</label>
+                        <input type="text" name="courseName" th:value="${request.courseName}" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Телефон</label>
+                        <input type="text" name="phone" th:value="${request.phone}" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Комментарий</label>
+                        <textarea name="commentary" rows="3" class="form-control" th:text="${request.commentary}"></textarea>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="handled" th:checked="${request.handled}">
+                        <label class="form-check-label">Обработано</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+
+                        <form th:action="@{'/' + ${request.id} + '/delete'}" method="post" style="display:inline;">
+                            <button class="btn btn-danger" type="submit">Удалить</button>
+                        </form>
+
+                        <a href="/" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
